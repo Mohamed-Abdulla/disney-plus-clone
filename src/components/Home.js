@@ -1,10 +1,26 @@
-import React from "react";
+import React, { useEffect } from "react";
 import styled from "styled-components";
 import ImgSlider from "./ImgSlider";
 import Viewers from "./Viewers";
 import Movies from "./Movies";
+import db from "../firebase"; //import database
+import { onSnapshot, collection } from "firebase/firestore"; //get database
+import { useDispatch } from "react-redux"; //for dispatch the action
+import { setMovies } from "../features/movie/movieSlice";
 
 function Home() {
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    onSnapshot(collection(db, "movies"), (snapshot) => {
+      let tempMovies = snapshot.docs.map((doc) => {
+        //loop through doc
+        return { id: doc.id, ...doc.data() }; //grab id and data
+      });
+      dispatch(setMovies(tempMovies)); //saved db movie as global and we use whereevr we want
+    });
+  }, []);
+
   return (
     <Container>
       <ImgSlider />
