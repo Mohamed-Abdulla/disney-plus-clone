@@ -1,34 +1,51 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { connectAdvanced } from "react-redux";
 import styled from "styled-components";
+import { useParams } from "react-router-dom"; // parameter of same id
+import db from "../firebase"; //import database
+import { doc, onSnapshot } from "firebase/firestore";
 
 function Details() {
+  const { id } = useParams(); //pass id as parameter to get same id's data
+  const [movie, setMovie] = useState(); //set movie state
+
+  useEffect(() => {
+    //grab the movie info from firebase db
+    onSnapshot(doc(db, "movies", id), (doc) => {
+      setMovie(doc.data());
+    });
+  }, []);
+
   return (
     <Container>
-      <Background>
-        <img src="" />
-      </Background>
-      <ImageTitle>
-        <img src="" />
-      </ImageTitle>
-      <Controls>
-        <Playbtn>
-          <img src="/images/play-icon-black.png" />
-          <span>PLAY</span>
-        </Playbtn>
-        <Trailerbtn>
-          <img src="/images/play-icon-white.png" />
-          <span>Trailer</span>
-        </Trailerbtn>
-        <Addbtn>
-          <span>+</span>
-        </Addbtn>
-        <GroupWatchbtn>
-          <img src="/images/group-icon.png" />
-        </GroupWatchbtn>
-      </Controls>
-      <SubTitle>hey world its me</SubTitle>
-      <Description>hey world its me Abd</Description>
+      {movie && (
+        <>
+          <Background>
+            <img src={movie.backgroundImg} />
+          </Background>
+          <ImageTitle>
+            <img src={movie.titleImg} />
+          </ImageTitle>
+          <Controls>
+            <Playbtn>
+              <img src="/images/play-icon-black.png" />
+              <span>PLAY</span>
+            </Playbtn>
+            <Trailerbtn>
+              <img src="/images/play-icon-white.png" />
+              <span>Trailer</span>
+            </Trailerbtn>
+            <Addbtn>
+              <span>+</span>
+            </Addbtn>
+            <GroupWatchbtn>
+              <img src="/images/group-icon.png" />
+            </GroupWatchbtn>
+          </Controls>
+          <SubTitle>{movie.subTitle}</SubTitle>
+          <Description>{movie.description}</Description>
+        </>
+      )}
     </Container>
   );
 }
@@ -55,18 +72,17 @@ const Background = styled.div`
   }
 `;
 const ImageTitle = styled.div`
-  height:30vh;
-  min-height:170px;
-  width:35vw;
-  min-width:200px;
-  margin-top:60px;
+  height: 30vh;
+  min-height: 170px;
+  width: 35vw;
+  min-width: 200px;
+  margin-top: 60px;
 
-  img{
-      height:100%
-      width:100%
-      object-fit:contain;
+  img {
+    height: 100%;
+    width: 100%;
+    object-fit: contain;
   }
-
 `;
 const Controls = styled.div`
   display: flex;
