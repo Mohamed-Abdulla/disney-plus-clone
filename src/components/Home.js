@@ -2,34 +2,66 @@ import React, { useEffect } from "react";
 import styled from "styled-components";
 import ImgSlider from "./ImgSlider";
 import Viewers from "./Viewers";
-import Movies from "./Movies";
+import NewDisney from "./NewDisney";
+import Recommends from "./Recommends";
+import Originals from "./Originals";
+import Trending from "./Trending";
 import db from "../firebase"; //import database
 import { onSnapshot, collection } from "firebase/firestore"; //get database
-import { useDispatch } from "react-redux"; //for dispatch the action
+import { useDispatch, useSelector } from "react-redux"; //for dispatch the action
 import { setMovies } from "../features/movie/movieSlice";
+import { selectUserName } from "../features/user/userSlice";
 
 function Home() {
   const dispatch = useDispatch();
+  const userName = useSelector(selectUserName);
+  let recommends = [];
+  let newDisneys = [];
+  let originals = [];
+  let trendings = [];
 
   useEffect(() => {
     onSnapshot(collection(db, "movies"), (snapshot) => {
       let tempMovies = snapshot.docs.map((doc) => {
         //loop through doc
-        return { id: doc.id, ...doc.data() }; //grab id and data
+        //grab id and data
+        switch (doc.data().type) {
+          case "recommend":
+            recommends = [...recommends, { id: doc.id, ...doc.data() }];
+            break;
+          case "new":
+            newDisneys = [...newDisneys, { id: doc.id, ...doc.data() }];
+            break;
+          case "original":
+            originals = [...originals, { id: doc.id, ...doc.data() }];
+            break;
+          case "trending":
+            trendings = [...trendings, { id: doc.id, ...doc.data() }];
+            break;
+        }
       });
-      dispatch(setMovies(tempMovies)); //saved db movie as global and we use whereevr we want
+      dispatch(
+        setMovies({
+          recommend: recommends,
+          newDisney: newDisneys,
+          original: originals,
+          trending: trendings,
+        })
+      ); //saved db movie as global and we use whereevr we want
     });
-  }, []);
+  }, [userName]);
 
   return (
     <Container>
       <ImgSlider />
       <Viewers />
-      <Movies />
+      <Recommends />
+      <NewDisney />
+      <Originals />
+      <Trending />
     </Container>
   );
 }
-
 export default Home;
 
 const Container = styled.main`

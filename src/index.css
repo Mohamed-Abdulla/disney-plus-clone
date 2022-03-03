@@ -18,15 +18,19 @@ code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
 }
-@media only screen and (min-width:768px){
+a{
+  text-decoration: none;
+
+}
+@media only screen and (min-width:768px){ /* larger than 768*/
   body
   {font-size: 16px;}
 }
-@media only screen and (min-width:480px) and (max-width:479px){
+@media only screen and (min-width:480px) and (max-width:479px){  /*for mobile devices*/
   body
   {font-size: 15px;}
 }
-@media only screen and (max-width:479px){
+@media only screen and (max-width:479px){  /*for small mbls*/
   body
   {font-size: 14px;}
 }

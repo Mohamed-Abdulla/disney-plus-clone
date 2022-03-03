@@ -105,6 +105,15 @@ const Playbtn = styled.button`
   &:hover {
     background: rgb(198, 198, 198);
   }
+  @media (max-width: 768px) {
+    height: 45px;
+    padding: 0px 12px;
+    font-size: 12px;
+    margin: 0px 10px 0px 0px;
+    img {
+      width: 25px;
+    }
+  }
 `;
 
 const Trailerbtn = styled(Playbtn)`
@@ -130,6 +139,9 @@ const Addbtn = styled.button`
     font-size: 30px;
     color: white;
   }
+  &:hover {
+    background: rgb(198, 198, 197);
+  }
 `;
 
 const GroupWatchbtn = styled(Addbtn)`
@@ -141,6 +153,10 @@ const SubTitle = styled.div`
   font-size: 15px;
   min-height: 20px;
   margin-top: 26px;
+
+  @media (max-width: 768px) {
+    font-size: 12px;
+  }
 `;
 
 const Description = styled.div`
@@ -149,4 +165,8 @@ const Description = styled.div`
   max-width: 768px;
   font-size: 20px;
   margin-top: 16px;
+
+  @media (max-width: 768px) {
+    font-size: 14px;
+  }
 `;

@@ -20,10 +20,15 @@ function Login() {
 export default Login;
 const Container = styled.div`
   position: relative;
-  height: calc(100vh - 70px);
+  height: calc(100vh - 0px);
   display: flex;
   align-items: top;
   justify-content: center;
+
+  @media (max-width: 768px) {
+    display: flex;
+    align-items: center;
+  }
 
   &:before {
     position: absolute;
